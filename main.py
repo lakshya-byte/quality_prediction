@@ -1,12 +1,15 @@
 import joblib
 import pandas as pd
-from flask import Flask, request, render_template
+from flask import Flask, request, jsonify
+from flask_cors import CORS   # ✅ add this
 
 MODEL_PATH = 'quality_prediction_model1.joblib'
 model_columns = ['Fertilizer', 'temp', 'N', 'P', 'K']
-app = Flask(__name__)
 
-loaded_model = joblib.load("quality_prediction_model1.joblib")
+app = Flask(__name__)
+CORS(app)  # ✅ allow all origins for MVP (you can restrict later)
+
+loaded_model = joblib.load(MODEL_PATH)
 
 GRADE_MAP = {
     0: 'A (High Quality)',
@@ -15,21 +18,21 @@ GRADE_MAP = {
     3: 'D (Poor Quality)'
 }
 
-    
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/predict', methods=['POST'])
 def predict_quality():
-    prediction_message = None
-    
-    if request.method == 'POST':
-        data = {col: float(request.form.get(col)) for col in model_columns}
-        df = pd.DataFrame([data], columns=model_columns)
-        
-        predicted_NUMERICAL = loaded_model.predict(df)[0]
+    data = request.get_json()
 
-        predicted_grade = GRADE_MAP.get(predicted_NUMERICAL, "Unknown Grade")
-        prediction_message = f"The predicted crop quality grade is: {predicted_grade}"
+    input_data = {col: float(data[col]) for col in model_columns}
+    df = pd.DataFrame([input_data], columns=model_columns)
 
-    return render_template('index.html', prediction_message=prediction_message, columns=model_columns)
+    predicted_class = loaded_model.predict(df)[0]
+    grade = GRADE_MAP.get(predicted_class, "Unknown Grade")
+
+    return jsonify({
+        "grade": grade,
+        "numeric": int(predicted_class)
+    })
+
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=8000, debug=True)
