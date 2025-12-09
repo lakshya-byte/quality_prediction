@@ -1,6 +1,9 @@
 Flask
+flask-cors
 pandas
+numpy
 joblib
 scikit-learn
 xgboost
-flask-cors
+tensorflow
+Pillow
