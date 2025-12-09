@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+    <form method="POST">
+        
+        <label>Fertilizer Amount:</label>
+        <input type="text" name="Fertilizer" min="49.75" max="76.94" required><br><br>
+
+        <label>Temperature (Avg):</label>
+        <input type="text" name="temp" min="28.00" max="39" required><br><br>
+
+        <label>Nitrogen (N) Value:</label>
+        <input type="text" name="N" min="58" max="77" required><br><br>
+        
+        <label>Phosphorus (P) Value:</label>
+        <input type="text" name="P" min="17" max="22" required><br><br>
+        
+        <label>Potassium (K) Value:</label>
+        <input type="text" name="K" min="14" max="19" required><br><br>
+
+        <!-- <label>Yield (Proxy Value):</label>
+        <input type="text" name="yeild" min="7" max="10" required><br><br> -->
+        
+        <button type="submit">Predict Quality</button>
+
+  </form>
+  <!-- {% if message %}
+   <h3>{{ message | safe }}</h3>
+{% endif %} -->
+    {% if prediction_message %}
+        <div><h1>
+            {{ prediction_message }}
+       </h1> </div>
+        {% endif %}
+   
+  <footer></footer>
+</body>
+</html>
+
+    </form>
+</body>
+</html>
