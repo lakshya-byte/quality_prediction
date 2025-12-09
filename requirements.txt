@@ -7,4 +7,3 @@ scikit-learn
 xgboost
 tensorflow
 Pillow
-google-genai
